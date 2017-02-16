@@ -1,4 +1,4 @@
-# Data set bigger than what github can handle
+# Data set too big for Github
 data/*
 
 # Byte-compiled / optimized / DLL files

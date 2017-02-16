@@ -25,4 +25,6 @@ Now that your environment is ready you can start building trees with the followi
 magic.py <data.mat>
 ```
 
+> Note: Download data from [this link](https://ibug.doc.ic.ac.uk/media/uploads/documents/courses/data4students.mat)
+
 ### Flags
