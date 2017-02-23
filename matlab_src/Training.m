@@ -34,7 +34,7 @@ elseif type == 2 % classifier
     outputSize = size(train_y,2); % in case of classification it should be equal to the number of classes
 
     hiddenActivationFunctions = {'leakyReLu','leakyReLu','leakyReLu','softmax'};
-    hiddenLayers = [500 500 1000 outputSize]; 
+    hiddenLayers = [1000 1000 1000 outputSize]; 
     
 end
 
@@ -61,7 +61,7 @@ nn = paramsNNinit(hiddenLayers, hiddenActivationFunctions);
 
 % Set some NN params
 %-----
-nn.epochs = 20;
+nn.epochs = 25;
 
 % set initial learning rate
 nn.trParams.lrParams.initialLR = 0.004; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
