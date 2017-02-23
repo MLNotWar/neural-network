@@ -21,12 +21,22 @@ test_x  = double(datasetInputs{1,3});
 test_y  = double(datasetTargets{1,3});
 
 inputSize = size(train_x,2);
-outputSize  = size(train_y,2);
 
-%if type = 1, i.e., AE then the last layer should be linear and usually a
-% series of decreasing layers are used
-hiddenActivationFunctions = {'sigm','sigm','sigm','sigm','sigm','sigm','sigm','linear'}; 
-hiddenLayers = [1000 500 250 50 250 500 1000 outputSize]; 
+if type == 1 % AE
+   outputSize  = inputSize; % in case of AE it should be equal to the number of inputs
+
+   %if type = 1, i.e., AE then the last layer should be linear and usually a
+   % series of decreasing layers are used
+    hiddenActivationFunctions = {'sigm','sigm','sigm','linear'}; 
+    hiddenLayers = [1000 500 250 50 250 500 1000 outputSize]; 
+    
+elseif type == 2 % classifier
+    outputSize = size(train_y,2); % in case of classification it should be equal to the number of classes
+
+    hiddenActivationFunctions = {'leakyReLu','leakyReLu','leakyReLu','softmax'};
+    hiddenLayers = [500 500 1000 outputSize]; 
+    
+end
 
 
 % parameters used for visualisation of first layer weights
@@ -54,13 +64,13 @@ nn = paramsNNinit(hiddenLayers, hiddenActivationFunctions);
 nn.epochs = 20;
 
 % set initial learning rate
-nn.trParams.lrParams.initialLR = 0.01; 
+nn.trParams.lrParams.initialLR = 0.004; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
 % set the threshold after which the learning rate will decrease (if type
 % = 1 or 2)
 nn.trParams.lrParams.lrEpochThres = 10;
 % set the learning rate update policy (check manual)
 % 1 = initialLR*lrEpochThres / max(lrEpochThres, T), 2 = scaling, 3 = lr / (1 + currentEpoch/lrEpochThres)
-nn.trParams.lrParams.schedulingType = 1;
+nn.trParams.lrParams.schedulingType = 2; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
 
 nn.trParams.momParams.schedulingType = 1;
 %set the epoch where the learning will begin to increase
@@ -110,8 +120,12 @@ nn.biases = biases;
 % see the function below for suggested values
 % nn = useSomeDefaultNNparams(nn);
 
-[nn, Lbatch, L_train, L_val]  = trainNN(nn, train_x, train_y, val_x, val_y);
-%{
+if type == 1 % AE
+    [nn, Lbatch, L_train, L_val]  = trainNN(nn, train_x, train_x, val_x, val_x);
+elseif type == 2 % classifier
+    [nn, Lbatch, L_train, L_val, clsfError_train, clsfError_val]  = trainNN(nn, train_x, train_y, val_x, val_y);
+ end
+
 nn = prepareNet4Testing(nn);
 
 % visualise weights of first layer
@@ -119,5 +133,9 @@ figure()
 visualiseHiddenLayerWeights(nn.W{1},visParams.col,visParams.row,visParams.noSubplots);
 
 
-[stats, output, e, L] = evaluateNNperformance( nn, test_x, test_x);
-%}
+if type == 1 % AE
+    [stats, output, e, L] = evaluateNNperformance( nn, test_x, test_x);
+elseif type == 2 % classifier
+    [stats, output, e, L] = evaluateNNperformance( nn, test_x, test_y);
+ end
+
