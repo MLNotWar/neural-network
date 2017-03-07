@@ -1,8 +1,10 @@
 function nn = Training(config)
 
-% load MNIST data
-load('data4students.mat');
+% Load configuration
 load(config);
+
+% Load data
+load(params.dataSrc);
 
 % training inputs and targets
 train_x = double(datasetInputs{1,1});
