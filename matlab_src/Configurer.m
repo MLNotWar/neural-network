@@ -4,7 +4,7 @@ params.dataSrc = 'data4students.mat';
 % Set Up the Network 
 load(params.dataSrc);
 outputSize = size(double(datasetTargets{1,1}),2); 
-num_hidden_layers = 5;
+num_hidden_layers = 3;
 activationFunction = 'leakyReLu';
 layerSize = 1000;
 widthReg = 'n';
@@ -13,12 +13,15 @@ params.hiddenLayers = [];
 for i = 1:num_hidden_layers
     params.hiddenLayers(1, i) = layerSize;
     params.hiddenActivationFunctions{1,i} = activationFunction;
+    if widthReg == 'c';
+        layerSize = round(layerSize * 0.09) * 10;
+    end
 end
 params.hiddenLayers(1, num_hidden_layers+1) = outputSize;
 params.hiddenActivationFunctions{1, num_hidden_layers+1} = 'softmax';
 
 % Number of Epochs
-params.epochs = 3;
+params.epochs = 200;
 
 % Learning Rate Parameters
 params.lrInitValue = 0.004;
