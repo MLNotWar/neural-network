@@ -27,15 +27,15 @@ if type == 1 % AE
 
    %if type = 1, i.e., AE then the last layer should be linear and usually a
    % series of decreasing layers are used
-    hiddenActivationFunctions = {'sigm','sigm','sigm','linear'}; 
-    hiddenLayers = [1000 500 250 50 250 500 1000 outputSize]; 
-    
+    hiddenActivationFunctions = {'sigm','sigm','sigm','linear'};
+    hiddenLayers = [1000 500 250 50 250 500 1000 outputSize];
+
 elseif type == 2 % classifier
     outputSize = size(train_y,2); % in case of classification it should be equal to the number of classes
 
     hiddenActivationFunctions = {'leakyReLu','leakyReLu','leakyReLu','softmax'};
-    hiddenLayers = [1000 1000 1000 outputSize]; 
-    
+    hiddenLayers = [1000 1000 1000 outputSize];
+
 end
 
 
@@ -43,7 +43,7 @@ end
 visParams.noExamplesPerSubplot = 50; % number of images to show per row
 visParams.noSubplots = floor(hiddenLayers(1) / visParams.noExamplesPerSubplot);
 visParams.col = 28;% number of image columns
-visParams.row = 28;% number of image rows 
+visParams.row = 28;% number of image rows
 
 inputActivationFunction = 'linear'; %sigm for binary inputs, linear for continuous input
 
@@ -70,7 +70,7 @@ nn.trParams.lrParams.initialLR = 0.004; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 nn.trParams.lrParams.lrEpochThres = 10;
 % set the learning rate update policy (check manual)
 % 1 = initialLR*lrEpochThres / max(lrEpochThres, T), 2 = scaling, 3 = lr / (1 + currentEpoch/lrEpochThres)
-nn.trParams.lrParams.schedulingType = 2; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
+nn.trParams.lrParams.schedulingType = 2; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
 
 nn.trParams.momParams.schedulingType = 1;
 %set the epoch where the learning will begin to increase
@@ -83,16 +83,19 @@ nn.weightConstraints.weightPenaltyL1 = 0;
 nn.weightConstraints.weightPenaltyL2 = 0;
 nn.weightConstraints.maxNormConstraint = 4;
 
-% show diagnostics to monnitor training  
+% show diagnostics to monnitor training
 nn.diagnostics = 1;
 % show diagnostics every "showDiagnostics" epochs
 nn.showDiagnostics = 5;
 
 % show training and validation loss plot
 nn.showPlot = 1;
+nn.savePlot = 1; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
+nn.outputFileName = "plot"; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
+
 
 % use bernoulli dropout
-nn.dropoutParams.dropoutType = 0;
+nn.dropoutParams.dropoutType = 0; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
 
 % if 1 then early stopping is used
 nn.earlyStopping = 0;
@@ -138,4 +141,3 @@ if type == 1 % AE
 elseif type == 2 % classifier
     [stats, output, e, L] = evaluateNNperformance( nn, test_x, test_y);
  end
-
