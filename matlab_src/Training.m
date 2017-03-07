@@ -78,6 +78,9 @@ nn.trParams.momParams.momentumEpochLowerThres = 10;
 %set the epoch where the learning will reach its final value (usually 0.9)
 nn.trParams.momParams.momentumEpochUpperThres = 15;
 
+% use bernoulli dropout
+nn.dropoutParams.dropoutType = 0; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
+
 % set weight constraints
 nn.weightConstraints.weightPenaltyL1 = 0;
 nn.weightConstraints.weightPenaltyL2 = 0;
@@ -91,11 +94,13 @@ nn.showDiagnostics = 5;
 % show training and validation loss plot
 nn.showPlot = 1;
 nn.savePlot = 1; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
-nn.outputFileName = "plot"; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
-
-
-% use bernoulli dropout
-nn.dropoutParams.dropoutType = 0; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% modified value
+% Output File Name structure plot_e<num_epochs>_r<DO>_t<depth><width_prog>
+if hiddenLayers(1,1) > hiddenLayers(1,2);
+    widthProg = [nn.outputFileName 'c'];
+else
+    widthProg = [nn.outputFileName 'n'];
+end
+nn.outputFileName = ["plot_e" nn.epochs "_r" nn.dropoutParams.dropoutType "_t" size(hiddenLayers) widthProg]; % modified value
 
 % if 1 then early stopping is used
 nn.earlyStopping = 0;
