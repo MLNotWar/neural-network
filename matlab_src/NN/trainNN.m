@@ -229,6 +229,8 @@ for i = 1 : numepochs
     if nn.type == 2
         disp(['Classification Error on Training Set ',num2str(clsfError_train(i))])
         disp(['Classification Error on Validation Set ',num2str(clsfError_val(i))])
+        nn.classErrorOnTraining = num2str(clsfError_train(i));
+        nn.classErrorOnValidation = num2str(clsfError_val(i));
     end
 
     disp(' ')
@@ -249,7 +251,7 @@ for i = 1 : numepochs
         updatefigure(fhandle,L(1:i), L_val(1:i), validation, numepochs);
 
         if nn.savePlot == 1;
-            print(nn.outputFileName, '-dpng');
+            print(['' nn.outputFile], '-dpng');
         end
     end
 
