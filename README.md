@@ -1,28 +1,27 @@
 # Neural Network
 ## Getting Started
-The Decision Trees Algorithm is built with Python3 and rely on a few modules that can be found requirements.txt.
+The Neural Network Algorithm is built with Matlab and relies on a Deep Learning Toolbox created by Stavros Petridis.
 
-## Installing dependencies
-### Linux
-1. Download any version of Python greater than 3.6 (minimum version of 3.5.2 is required however 3.6.0 and above is recommended) from  [this link](https://www.python.org/downloads/) and follow the installation instructions.
+> Note: Download data from [this link](https://ibug.doc.ic.ac.uk/media/uploads/documents/courses/data4students.mat)
 
-2. Install pip with the following command:
-```
-curl https://bootstrap.pypa.io/get-pip.py | python -
-```
+## Installing Matlab
+Download the latest version of Matlab from [their website](http://uk.mathworks.com/help/install/ug/install-mathworks-software.html?requestedDomain=uk.mathworks.com) and follow the installation instructions.
 
-3. Navigate to the project repository and install requirements with the following command:
+## Running the Neural Network Trainer
+### Adding the paths
+In order to use Matlab you need to add the path to all the files by using the following command:
 ```
-pip install -r requirements.txt
+matlab -nodesktop -nosplash -r "addpath('path_to_directory/neural-network/NN', 'path_to_directory/neural-network/DBN','path_to_directory/neural-network/misc', 'path_to_directory/neural-network/examples','path_to_directory/neural-network');"
 ```
 
-> Note: Alternatively you can run Python in a virtual environment such as virtualenv or pyenv.
-
-## Running the Application
-Now that your environment is ready you can start building trees with the following command:
-
+### Creating your configuration
+Edit the hyper-parameters to your liking in Configurer.m then run the following command in order to generate a .mat configuration file:
 ```
-magic.py <data.mat>
+matlab -r 'Configurer'
 ```
 
-### Flags
+### Building the neural network
+Now that you have defined your network configuration simply run the following command to build the neural network:
+```
+matlab -r 'Training('<config.mat>')'
+```
