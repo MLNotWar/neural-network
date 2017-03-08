@@ -48,5 +48,9 @@ figure()
 visualiseHiddenLayerWeights(nn.W{1},visParams.col,visParams.row,visParams.noSubplots);
 
 [stats, output, e, L] = evaluateNNperformance( nn, test_x, test_y);
-disp(output);
- end
+
+% Saves output
+if params.saveResult == 1;
+   saveResult(params, nn);
+end 
+end
