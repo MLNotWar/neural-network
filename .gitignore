@@ -1,6 +1,12 @@
 # Data set bigger than what github can handle
 data/*
 
+# Matlab Generated Files
+*.mat
+*.png
+*.pdf
+*.fig
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
